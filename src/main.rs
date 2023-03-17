@@ -173,7 +173,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
                 .fg(Color::DarkGray)
                 .add_modifier(Modifier::DIM),
         )
-        .value_style(Style::default().fg(Color::White).bg(Color::Green));
+        .value_style(Style::default().fg(Color::Black).bg(Color::Green));
     f.render_widget(bar_chart, chunks[1]);
 
     let app_line_data = app
