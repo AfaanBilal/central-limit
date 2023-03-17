@@ -28,8 +28,6 @@ use tui::{
     Frame, Terminal,
 };
 
-const BUCKET_INSET: i32 = 3;
-
 struct App {
     b_count: usize,
     r_max: i32,
@@ -46,7 +44,7 @@ impl App {
     }
 
     fn on_tick(&mut self) {
-        let (b_min, b_max) = (-(self.r_max - BUCKET_INSET), self.r_max);
+        let (b_min, b_max) = (-(self.r_max + 2), self.r_max + 2);
 
         let mut buckets = vec![];
         for r in b_min..=b_max {
@@ -145,7 +143,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
 
     f.render_widget(
         Paragraph::new(format!(
-            "\n\nCentral Limit Theorem - A simple TUI demo\n\n\n Afaan Bilal | https://afaan.dev\n\nIterations per render: {} | Buckets: {}",
+            "\nCentral Limit Theorem - A simple TUI simulation\n\nAfaan Bilal | https://afaan.dev\n\nIterations per render: {} | Buckets: {}",
             &app.b_count, &app.r_max
         ))
         .style(
@@ -208,7 +206,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
                         Style::default().add_modifier(Modifier::BOLD),
                     ),
                 ])
-                .bounds([-(app.r_max - BUCKET_INSET) as f64, app.r_max as f64]),
+                .bounds([-app.r_max as f64, app.r_max as f64]),
         )
         .y_axis(
             Axis::default()
