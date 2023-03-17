@@ -28,7 +28,7 @@ use tui::{
     Frame, Terminal,
 };
 
-const BUCKET_PADDING: i32 = 3;
+const BUCKET_INSET: i32 = 3;
 
 struct App {
     b_count: usize,
@@ -46,7 +46,7 @@ impl App {
     }
 
     fn on_tick(&mut self) {
-        let (b_min, b_max) = (-self.r_max, self.r_max + BUCKET_PADDING);
+        let (b_min, b_max) = (-(self.r_max - BUCKET_INSET), self.r_max);
 
         let mut buckets = vec![];
         for r in b_min..=b_max {
@@ -208,7 +208,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
                         Style::default().add_modifier(Modifier::BOLD),
                     ),
                 ])
-                .bounds([-app.r_max as f64, app.r_max as f64]),
+                .bounds([-(app.r_max - BUCKET_INSET) as f64, app.r_max as f64]),
         )
         .y_axis(
             Axis::default()
