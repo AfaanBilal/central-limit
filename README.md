@@ -9,7 +9,7 @@ A simple TUI demo of the [Central Limit Theorem](https://en.wikipedia.org/wiki/C
 
 ---
 
-### Screenshots
+## Screenshots
 
 ![central limit](assets/central-limit.png)
 
