@@ -1,7 +1,7 @@
 Central Limit
 =============
 
-> A simple TUI demo of the central limit theorem built with Rust.
+> A simple TUI demo of the Central Limit Theorem built with Rust.
 ---
 
 ### **Author**: [Afaan Bilal](https://afaan.dev)
