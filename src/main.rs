@@ -22,7 +22,9 @@ use tui::{
     backend::{Backend, CrosstermBackend},
     layout::{Alignment, Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
-    widgets::{BarChart, Block, Borders, Paragraph},
+    symbols,
+    text::Span,
+    widgets::{Axis, BarChart, Block, Borders, Chart, Dataset, GraphType, Paragraph},
     Frame, Terminal,
 };
 
@@ -69,28 +71,23 @@ impl App {
         self.data.clear();
 
         for b in buckets {
-            self.data.push((
-                format!("{}", b),
-                sums.iter().filter(|s| *s == &b).count() as u64,
-            ));
+            let sum = sums.iter().filter(|s| *s == &b).count() as u64;
+            self.data.push((format!("{}", b), sum));
         }
     }
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    // setup terminal
     enable_raw_mode()?;
     let mut stdout = io::stdout();
     execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
 
-    // create app and run it
     let tick_rate = Duration::from_millis(500);
     let app = App::new();
     let res = run_app(&mut terminal, app, tick_rate);
 
-    // restore terminal
     disable_raw_mode()?;
     execute!(
         terminal.backend_mut(),
@@ -136,7 +133,14 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .margin(2)
-        .constraints([Constraint::Percentage(15), Constraint::Percentage(85)].as_ref())
+        .constraints(
+            [
+                Constraint::Percentage(15),
+                Constraint::Percentage(45),
+                Constraint::Percentage(40),
+            ]
+            .as_ref(),
+        )
         .split(f.size());
 
     f.render_widget(
@@ -154,7 +158,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
         chunks[0],
     );
 
-    let app_data = app
+    let bar_data = app
         .data
         .iter()
         .map(|x| (x.0.as_str(), x.1))
@@ -162,7 +166,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
 
     let bar_chart = BarChart::default()
         .block(Block::default().borders(Borders::ALL))
-        .data(&app_data)
+        .data(&bar_data)
         .bar_width(7)
         .bar_gap(1)
         .bar_style(Style::default().fg(Color::Green))
@@ -173,4 +177,50 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
         )
         .value_style(Style::default().fg(Color::White).bg(Color::Green));
     f.render_widget(bar_chart, chunks[1]);
+
+    let app_line_data = app
+        .data
+        .iter()
+        .map(|x| (x.0.parse::<f64>().unwrap(), x.1 as f64))
+        .collect::<Vec<_>>();
+
+    let line_data = vec![Dataset::default()
+        .marker(symbols::Marker::Dot)
+        .style(Style::default().fg(Color::Yellow))
+        .graph_type(GraphType::Line)
+        .data(&app_line_data)];
+
+    let y_max = (app.b_count as f64) / 4.5;
+
+    let chart = Chart::new(line_data)
+        .block(Block::default().borders(Borders::ALL))
+        .x_axis(
+            Axis::default()
+                .style(Style::default().fg(Color::Gray))
+                .labels(vec![
+                    Span::styled(
+                        format!("-{}", app.r_max),
+                        Style::default().add_modifier(Modifier::BOLD),
+                    ),
+                    Span::raw("0"),
+                    Span::styled(
+                        format!("{}", app.r_max),
+                        Style::default().add_modifier(Modifier::BOLD),
+                    ),
+                ])
+                .bounds([-app.r_max as f64, app.r_max as f64]),
+        )
+        .y_axis(
+            Axis::default()
+                .style(Style::default().fg(Color::Gray))
+                .labels(vec![
+                    Span::styled("0", Style::default().add_modifier(Modifier::BOLD)),
+                    Span::styled(
+                        format!("{:.0}", y_max),
+                        Style::default().add_modifier(Modifier::BOLD),
+                    ),
+                ])
+                .bounds([0.0, y_max]),
+        );
+    f.render_widget(chart, chunks[2]);
 }
