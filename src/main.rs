@@ -141,7 +141,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
 
     f.render_widget(
         Paragraph::new(format!(
-            "\n\nCentral Limit Theorem - A simple TUI demo\n\n\n Afaan Bilal | https://afaan.dev\n\nIterations: {} | Buckets: {}",
+            "\n\nCentral Limit Theorem - A simple TUI demo\n\n\n Afaan Bilal | https://afaan.dev\n\nIterations per render: {} | Buckets: {}",
             &app.b_count, &app.r_max
         ))
         .style(
