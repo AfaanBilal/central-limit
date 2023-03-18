@@ -3,6 +3,8 @@ Central Limit
 
 A simple TUI simulation of the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem) built with Rust.
 
+> Inspired by this excellent [3B1B video.](https://youtu.be/zeJD6dqJ5lo)
+
 ---
 
 ### **Author**: [Afaan Bilal](https://afaan.dev)
