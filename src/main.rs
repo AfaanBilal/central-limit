@@ -1,7 +1,7 @@
 /**
  * Central Limit
  *
- * A simple terminal UI demo of the central limit theorem.
+ * A simulation of the Central Limit Theorem.
  *
  * @author      Afaan Bilal
  * @link        https://afaan.dev
@@ -77,6 +77,7 @@ impl App {
 
 fn main() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;
+
     let mut stdout = io::stdout();
     execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
     let backend = CrosstermBackend::new(stdout);
@@ -87,11 +88,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     let res = run_app(&mut terminal, app, tick_rate);
 
     disable_raw_mode()?;
+
     execute!(
         terminal.backend_mut(),
         LeaveAlternateScreen,
         DisableMouseCapture
     )?;
+
     terminal.show_cursor()?;
 
     if let Err(err) = res {
@@ -113,6 +116,7 @@ fn run_app<B: Backend>(
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
             .unwrap_or_else(|| Duration::from_secs(0));
+
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
                 if let KeyCode::Char('q') = key.code {
@@ -120,6 +124,7 @@ fn run_app<B: Backend>(
                 }
             }
         }
+
         if last_tick.elapsed() >= tick_rate {
             app.on_tick();
             last_tick = Instant::now();
