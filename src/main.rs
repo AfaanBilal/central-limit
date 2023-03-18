@@ -138,8 +138,8 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
         .margin(2)
         .constraints(
             [
-                Constraint::Percentage(15),
-                Constraint::Percentage(45),
+                Constraint::Percentage(20),
+                Constraint::Percentage(40),
                 Constraint::Percentage(40),
             ]
             .as_ref(),
@@ -148,7 +148,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
 
     f.render_widget(
         Paragraph::new(format!(
-            "\nA simulation of the Central Limit Theorem\n\nAfaan Bilal | https://afaan.dev\n\nIterations per render: {} | Buckets: {}",
+            "\nA simulation of the Central Limit Theorem\n\nAfaan Bilal | https://afaan.dev\n\nIterations per render: {} | Buckets: {}\nInspired by 3B1B video: https://youtu.be/zeJD6dqJ5lo",
             &app.b_count, &app.r_max
         ))
         .style(
