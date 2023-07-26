@@ -148,8 +148,8 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
 
     f.render_widget(
         Paragraph::new(format!(
-            "\nA simulation of the Central Limit Theorem\n\nAfaan Bilal | https://afaan.dev\n\nIterations per render: {} | Buckets: {}\nInspired by 3B1B video: https://youtu.be/zeJD6dqJ5lo",
-            &app.b_count, &app.r_max
+            "A simulation of the Central Limit Theorem\n\nAfaan Bilal | https://afaan.dev\n\nIterations per render: {} | Tick rate: {}ms | Buckets: {}\nInspired by this excellent 3B1B video: https://youtu.be/zeJD6dqJ5lo\nPress q to quit",
+            &app.b_count, 500, &app.r_max
         ))
         .style(
             Style::default()
