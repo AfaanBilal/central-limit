@@ -13,6 +13,12 @@ A simple TUI simulation of the [Central Limit Theorem](https://en.wikipedia.org/
 
 ## Screenshots
 
+#### Windows
+![central limit](assets/central-limit.gif)
+
+---
+
+#### MacOs
 ![central limit](assets/central-limit.png)
 
 ---
