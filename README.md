@@ -9,6 +9,8 @@ A simple TUI simulation of the [Central Limit Theorem](https://en.wikipedia.org/
 
 ### **Author**: [Afaan Bilal](https://afaan.dev)
 
+![central limit](assets/central-limit-hero.png)
+
 ---
 
 ## Screenshots
