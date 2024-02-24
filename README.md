@@ -20,7 +20,7 @@ A simple TUI simulation of the [Central Limit Theorem](https://en.wikipedia.org/
 
 ---
 
-#### MacOs
+#### MacOS
 ![central limit](assets/central-limit.png)
 
 ---
